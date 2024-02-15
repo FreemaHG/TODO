@@ -75,12 +75,9 @@
         };
     }
 
-    // Регистрируем обработчик событий при формировании DOM-дерева, выполнится функция, которая вызовет все описанные выше функции
-    document.addEventListener('DOMContentLoaded', function() {
-        let container = document.getElementById('todo-app');  // Получаем главный контейнер из DOM-дерева (созданный в HTML)
-
+    function createTodoApp(container, title = 'Список дел') {
         // Вызываем ранее созданные функции, сохраняем объекты в переменные
-        let todoAppTitle = createAppTitle('Список дел');
+        let todoAppTitle = createAppTitle(title);
         let todoItemForm = createTodoItemForm();
         let todoList = createTodoList();
 
@@ -123,7 +120,17 @@
             todoItemForm.input.value = '';
 
         });
+    }
+
+    // Присваиваем глобальному объекту метод - функцию по созданию списка дел,
+    // чтобы после можно было вызвать эту функцию из любого другого файла через глобальный объект window
+    window.createTodoApp = createTodoApp;
+
+    // Регистрируем обработчик событий при формировании DOM-дерева, выполнится функция, которая вызовет все описанные выше функции
+    document.addEventListener('DOMContentLoaded', function() {
+        createTodoApp(document.getElementById('my-todos'), 'Мои дела');
+        createTodoApp(document.getElementById('mom-todos'), 'Дела для мамы');
+        createTodoApp(document.getElementById('dad-todos'), 'Дела для папы');
 
     });
-
 })();
